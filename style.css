@@ -1,0 +1,38 @@
+body {
+  font-family: sans-serif;
+  margin: 2rem;
+  background: #f8f8f8;
+  color: #333;
+}
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+#target-sentence {
+  font-size: 1.5rem;
+  background: #ffffff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ccc;
+}
+
+#user-input {
+  width: 100%;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
