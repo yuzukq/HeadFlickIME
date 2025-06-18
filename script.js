@@ -17,9 +17,14 @@ let currentIndex = 0;
 let experimentData = [];
 let startTime = null;
 let inputStarted = false;
+let requiredChars = [];
+let matchedIndexes = [];
+let isInputComplete = false;
 
 const target = document.getElementById("target-sentence");
 const input = document.getElementById("user-input");
+const inputFeedback = document.getElementById("input-feedback");
+const nextBtn = document.querySelector('#control-buttons button');
 
 // 最小編集距離（MSD）を計算する関数
 function calculateMSD(str1, str2) {
@@ -55,13 +60,59 @@ function calculateAccuracy(original, input) {
   return Math.max(0, 100 - (msd / maxLen) * 100);
 }
 
+// 入力の正確性を視覚的に表示（部分列探索）
+function updateInputFeedback(inputText) {
+  let feedbackHTML = '';
+  let matchPos = 0;
+  matchedIndexes = [];
+  for (let i = 0; i < inputText.length; i++) {
+    if (
+      matchPos < requiredChars.length &&
+      inputText[i] === requiredChars[matchPos]
+    ) {
+      feedbackHTML += `<span class="correct-char">${inputText[i]}</span>`;
+      matchedIndexes.push(i);
+      matchPos++;
+    } else {
+      feedbackHTML += `<span class="incorrect-char">${inputText[i]}</span>`;
+    }
+  }
+  inputFeedback.innerHTML = feedbackHTML;
+
+  // すべての必要な文字が順番通りに現れた場合
+  if (matchPos === requiredChars.length && !isInputComplete) {
+    isInputComplete = true;
+    const endTime = Date.now();
+    const inputTime = (endTime - startTime) / 1000; // 秒
+    const originalText = sentences[currentIndex];
+    const accuracy = calculateAccuracy(originalText, inputText);
+    const speed = originalText.length / inputTime; // 文字/秒
+    experimentData.push({
+      sentenceIndex: currentIndex + 1,
+      originalText: originalText,
+      inputText: inputText,
+      inputTime: inputTime,
+      speed: speed,
+      accuracy: accuracy,
+      msd: calculateMSD(originalText, inputText)
+    });
+    // 「次の文へ」ボタンを表示
+    nextBtn.style.display = 'inline-block';
+    input.disabled = true;
+  }
+}
+
 function showSentence(index) {
   target.textContent = sentences[index];
   input.value = "";
   input.disabled = false;
-  input.focus();
   inputStarted = false;
   startTime = null;
+  requiredChars = sentences[index].split('');
+  matchedIndexes = [];
+  isInputComplete = false;
+  inputFeedback.innerHTML = '';
+  nextBtn.style.display = 'none';
 }
 
 // 入力開始を検知
@@ -73,26 +124,6 @@ function onInputStart() {
 }
 
 function nextSentence() {
-  if (currentIndex < sentences.length && inputStarted) {
-    // 現在の文の結果を記録
-    const endTime = Date.now();
-    const inputTime = (endTime - startTime) / 1000; // 秒
-    const originalText = sentences[currentIndex];
-    const inputText = input.value;
-    const accuracy = calculateAccuracy(originalText, inputText);
-    const speed = originalText.length / inputTime; // 文字/秒
-    
-    experimentData.push({
-      sentenceIndex: currentIndex + 1,
-      originalText: originalText,
-      inputText: inputText,
-      inputTime: inputTime,
-      speed: speed,
-      accuracy: accuracy,
-      msd: calculateMSD(originalText, inputText)
-    });
-  }
-  
   currentIndex++;
   if (currentIndex < sentences.length) {
     showSentence(currentIndex);
@@ -213,7 +244,12 @@ function downloadData(data) {
 }
 
 // イベントリスナーを追加
-input.addEventListener('input', onInputStart);
+input.addEventListener('input', (e) => {
+  if (!isInputComplete) {
+    onInputStart();
+    updateInputFeedback(e.target.value);
+  }
+});
 
 // 初期表示
 showSentence(currentIndex);
