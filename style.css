@@ -36,3 +36,79 @@ button {
 button:hover {
   background-color: #2980b9;
 }
+
+/* アンケート用スタイル */
+#survey-container {
+  background: #ffffff;
+  padding: 2rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.survey-question {
+  margin-bottom: 2rem;
+}
+
+.survey-question label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.rating {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rating input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.rating label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.rating label:hover {
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+#comments {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+#complete-btn {
+  background-color: #27ae60;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+
+#complete-btn:hover {
+  background-color: #219a52;
+}
+
+/* レスポンシブ対応 */
+@media (min-width: 768px) {
+  .rating {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .rating label {
+    flex: 0 0 auto;
+    min-width: 200px;
+  }
+}
