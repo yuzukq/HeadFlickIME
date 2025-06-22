@@ -74,7 +74,7 @@ function interruptSentence() {
     const originalText = sentences[currentIndex];
     const inputText = input.value;
     const accuracy = calculateAccuracy(originalText, inputText);
-    const speed = inputText.length > 0 ? inputText.length / inputTime : 0; // 文字/秒
+    const speed = inputText.length > 0 ? inputText.length / inputTime : 0; // CPS:文字/秒
     
     const interCharMs = charTimes.map((t, i) => i ? t - charTimes[i-1] : 0);
     
@@ -128,21 +128,21 @@ function updateInputFeedback(inputText) {
     const inputTime = (endTime - startTime) / 1000; // 秒
     const originalText = sentences[currentIndex];
     const accuracy = calculateAccuracy(originalText, inputText);
-    const speed = originalText.length / inputTime; // 文字/秒
+    const speed = originalText.length / inputTime; // CPS:文字/秒
     
     const interCharMs = charTimes.map((t, i) => i ? t - charTimes[i-1] : 0);
     
     experimentData.push({
       sentenceIndex: currentIndex + 1,
       originalText: originalText,
-      inputText: inputText,
-      inputTime: inputTime,
+      inputText: inputText, // 入力されたテキスト
+      inputTime: inputTime, // 入力時間
       speed: speed,
-      accuracy: accuracy,
-      msd: calculateMSD(originalText, inputText),
-      cer: calculateCER(originalText, inputText),
-      charTimes: charTimes,
-      interCharMs: interCharMs,
+      accuracy: accuracy, // 入力精度
+      msd: calculateMSD(originalText, inputText), // 最小編集距離
+      cer: calculateCER(originalText, inputText), // 文字エラー率
+      charTimes: charTimes, 
+      interCharMs: interCharMs, // 文字間インターバル
       interrupted: false  // 中断フラグを追加
     });
     // 「次の文へ」ボタンを表示
@@ -191,53 +191,172 @@ function showSurvey() {
   const surveyHTML = `
     <div id="survey-container">
       <h3>アンケート</h3>
+      <p>各項目について、最も当てはまるものを選択してください。</p>
+
+      <!-- SUS (システムユーザビリティスケール) -->
+      <h4>システム全体の使いやすさ (SUS)</h4>
       <div class="survey-question">
-        <label>1. 入力のしやすさはいかがでしたか？</label>
+        <label>1. この入力方法は、今後も頻繁に使いたいと思える。</label>
         <div class="rating">
-          <input type="radio" name="ease" value="1" id="ease1"><label for="ease1">1 (とても難しい)</label>
-          <input type="radio" name="ease" value="2" id="ease2"><label for="ease2">2 (難しい)</label>
-          <input type="radio" name="ease" value="3" id="ease3"><label for="ease3">3 (普通)</label>
-          <input type="radio" name="ease" value="4" id="ease4"><label for="ease4">4 (簡単)</label>
-          <input type="radio" name="ease" value="5" id="ease5"><label for="ease5">5 (とても簡単)</label>
+          <input type="radio" name="sus1" value="1" id="sus1-1"><label for="sus1-1">1:全くそう思わない</label>
+          <input type="radio" name="sus1" value="2" id="sus1-2"><label for="sus1-2">2</label>
+          <input type="radio" name="sus1" value="3" id="sus1-3"><label for="sus1-3">3</label>
+          <input type="radio" name="sus1" value="4" id="sus1-4"><label for="sus1-4">4</label>
+          <input type="radio" name="sus1" value="5" id="sus1-5"><label for="sus1-5">5:強くそう思う</label>
         </div>
       </div>
-      
       <div class="survey-question">
-        <label>2. 入力精度に満足していますか？</label>
+        <label>2. この入力方法は、不必要に複雑だと感じた。</label>
         <div class="rating">
-          <input type="radio" name="satisfaction" value="1" id="sat1"><label for="sat1">1 (とても不満)</label>
-          <input type="radio" name="satisfaction" value="2" id="sat2"><label for="sat2">2 (不満)</label>
-          <input type="radio" name="satisfaction" value="3" id="sat3"><label for="sat3">3 (普通)</label>
-          <input type="radio" name="satisfaction" value="4" id="sat4"><label for="sat4">4 (満足)</label>
-          <input type="radio" name="satisfaction" value="5" id="sat5"><label for="sat5">5 (とても満足)</label>
+          <input type="radio" name="sus2" value="1" id="sus2-1"><label for="sus2-1">1:全くそう思わない</label>
+          <input type="radio" name="sus2" value="2" id="sus2-2"><label for="sus2-2">2</label>
+          <input type="radio" name="sus2" value="3" id="sus2-3"><label for="sus2-3">3</label>
+          <input type="radio" name="sus2" value="4" id="sus2-4"><label for="sus2-4">4</label>
+          <input type="radio" name="sus2" value="5" id="sus2-5"><label for="sus2-5">5:強くそう思う</label>
         </div>
       </div>
-      
       <div class="survey-question">
-        <label>3. 入力速度はいかがでしたか？</label>
+        <label>3. この入力方法は、とても使いやすいと思った。</label>
         <div class="rating">
-          <input type="radio" name="speed_feeling" value="1" id="speed1"><label for="speed1">1 (とても遅い)</label>
-          <input type="radio" name="speed_feeling" value="2" id="speed2"><label for="speed2">2 (遅い)</label>
-          <input type="radio" name="speed_feeling" value="3" id="speed3"><label for="speed3">3 (普通)</label>
-          <input type="radio" name="speed_feeling" value="4" id="speed4"><label for="speed4">4 (速い)</label>
-          <input type="radio" name="speed_feeling" value="5" id="speed5"><label for="speed5">5 (とても速い)</label>
+          <input type="radio" name="sus3" value="1" id="sus3-1"><label for="sus3-1">1:全くそう思わない</label>
+          <input type="radio" name="sus3" value="2" id="sus3-2"><label for="sus3-2">2</label>
+          <input type="radio" name="sus3" value="3" id="sus3-3"><label for="sus3-3">3</label>
+          <input type="radio" name="sus3" value="4" id="sus3-4"><label for="sus3-4">4</label>
+          <input type="radio" name="sus3" value="5" id="sus3-5"><label for="sus3-5">5:強くそう思う</label>
         </div>
       </div>
-      
       <div class="survey-question">
-        <label>4. 全体的な使いやすさはいかがでしたか？</label>
+        <label>4. この入力方法を使いこなすには、専門家の助けが必要だと感じた。</label>
         <div class="rating">
-          <input type="radio" name="usability" value="1" id="use1"><label for="use1">1 (とても使いにくい)</label>
-          <input type="radio" name="usability" value="2" id="use2"><label for="use2">2 (使いにくい)</label>
-          <input type="radio" name="usability" value="3" id="use3"><label for="use3">3 (普通)</label>
-          <input type="radio" name="usability" value="4" id="use4"><label for="use4">4 (使いやすい)</label>
-          <input type="radio" name="usability" value="5" id="use5"><label for="use5">5 (とても使いやすい)</label>
+          <input type="radio" name="sus4" value="1" id="sus4-1"><label for="sus4-1">1:全くそう思わない</label>
+          <input type="radio" name="sus4" value="2" id="sus4-2"><label for="sus4-2">2</label>
+          <input type="radio" name="sus4" value="3" id="sus4-3"><label for="sus4-3">3</label>
+          <input type="radio" name="sus4" value="4" id="sus4-4"><label for="sus4-4">4</label>
+          <input type="radio" name="sus4" value="5" id="sus4-5"><label for="sus4-5">5:強くそう思う</label>
         </div>
       </div>
-      
       <div class="survey-question">
-        <label>5. その他のご意見・ご感想があれば記入してください：</label>
-        <textarea id="comments" rows="3" placeholder="任意でご記入ください"></textarea>
+        <label>5. この入力方法の機能（子音選択、母音選択など）は、うまく統合されていると感じた。</label>
+        <div class="rating">
+          <input type="radio" name="sus5" value="1" id="sus5-1"><label for="sus5-1">1:全くそう思わない</label>
+          <input type="radio" name="sus5" value="2" id="sus5-2"><label for="sus5-2">2</label>
+          <input type="radio" name="sus5" value="3" id="sus5-3"><label for="sus5-3">3</label>
+          <input type="radio" name="sus5" value="4" id="sus5-4"><label for="sus5-4">4</label>
+          <input type="radio" name="sus5" value="5" id="sus5-5"><label for="sus5-5">5:強くそう思う</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>6. この入力方法の操作には、一貫性のない部分が多すぎると感じた。</label>
+        <div class="rating">
+          <input type="radio" name="sus6" value="1" id="sus6-1"><label for="sus6-1">1:全くそう思わない</label>
+          <input type="radio" name="sus6" value="2" id="sus6-2"><label for="sus6-2">2</label>
+          <input type="radio" name="sus6" value="3" id="sus6-3"><label for="sus6-3">3</label>
+          <input type="radio" name="sus6" value="4" id="sus6-4"><label for="sus6-4">4</label>
+          <input type="radio" name="sus6" value="5" id="sus6-5"><label for="sus6-5">5:強くそう思う</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>7. ほとんどの人は、この入力方法をすぐに習得できると思う。</label>
+        <div class="rating">
+          <input type="radio" name="sus7" value="1" id="sus7-1"><label for="sus7-1">1:全くそう思わない</label>
+          <input type="radio" name="sus7" value="2" id="sus7-2"><label for="sus7-2">2</label>
+          <input type="radio" name="sus7" value="3" id="sus7-3"><label for="sus7-3">3</label>
+          <input type="radio" name="sus7" value="4" id="sus7-4"><label for="sus7-4">4</label>
+          <input type="radio" name="sus7" value="5" id="sus7-5"><label for="sus7-5">5:強くそう思う</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>8. この入力方法を使うのは、とても面倒だと感じた。</label>
+        <div class="rating">
+          <input type="radio" name="sus8" value="1" id="sus8-1"><label for="sus8-1">1:全くそう思わない</label>
+          <input type="radio" name="sus8" value="2" id="sus8-2"><label for="sus8-2">2</label>
+          <input type="radio" name="sus8" value="3" id="sus8-3"><label for="sus8-3">3</label>
+          <input type="radio" name="sus8" value="4" id="sus8-4"><label for="sus8-4">4</label>
+          <input type="radio" name="sus8" value="5" id="sus8-5"><label for="sus8-5">5:強くそう思う</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>9. この入力方法を、自信を持って使うことができた。</label>
+        <div class="rating">
+          <input type="radio" name="sus9" value="1" id="sus9-1"><label for="sus9-1">1:全くそう思わない</label>
+          <input type="radio" name="sus9" value="2" id="sus9-2"><label for="sus9-2">2</label>
+          <input type="radio" name="sus9" value="3" id="sus9-3"><label for="sus9-3">3</label>
+          <input type="radio" name="sus9" value="4" id="sus9-4"><label for="sus9-4">4</label>
+          <input type="radio" name="sus9" value="5" id="sus9-5"><label for="sus9-5">5:強くそう思う</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>10. この入力方法を使い始める前に、多くのことを覚える必要があった。</label>
+        <div class="rating">
+          <input type="radio" name="sus10" value="1" id="sus10-1"><label for="sus10-1">1:全くそう思わない</label>
+          <input type="radio" name="sus10" value="2" id="sus10-2"><label for="sus10-2">2</label>
+          <input type="radio" name="sus10" value="3" id="sus10-3"><label for="sus10-3">3</label>
+          <input type="radio" name="sus10" value="4" id="sus10-4"><label for="sus10-4">4</label>
+          <input type="radio" name="sus10" value="5" id="sus10-5"><label for="sus10-5">5:強くそう思う</label>
+        </div>
+      </div>
+
+      <!-- NASA-TLX -->
+      <h4>作業中の負担感 (NASA-TLX)</h4>
+      <div class="survey-question">
+        <label>1. 知的要求: 文字を入力するために、どれくらい集中したり、考えたりする必要がありましたか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_mental" value="1" id="tlx_mental-1"><label for="tlx_mental-1">1:非常に少なかった</label>
+          <input type="radio" name="tlx_mental" value="2" id="tlx_mental-2"><label for="tlx_mental-2">2</label>
+          <input type="radio" name="tlx_mental" value="3" id="tlx_mental-3"><label for="tlx_mental-3">3</label>
+          <input type="radio" name="tlx_mental" value="4" id="tlx_mental-4"><label for="tlx_mental-4">4</label>
+          <input type="radio" name="tlx_mental" value="5" id="tlx_mental-5"><label for="tlx_mental-5">5:非常に多かった</label>
+        </div>
+      </div>
+       <div class="survey-question">
+        <label>2. 身体的要求: 文字を入力するために、頭を動かすなどの身体的な活動はどれくらい必要でしたか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_physical" value="1" id="tlx_physical-1"><label for="tlx_physical-1">1:非常に少なかった</label>
+          <input type="radio" name="tlx_physical" value="2" id="tlx_physical-2"><label for="tlx_physical-2">2</label>
+          <input type="radio" name="tlx_physical" value="3" id="tlx_physical-3"><label for="tlx_physical-3">3</label>
+          <input type="radio" name="tlx_physical" value="4" id="tlx_physical-4"><label for="tlx_physical-4">4</label>
+          <input type="radio" name="tlx_physical" value="5" id="tlx_physical-5"><label for="tlx_physical-5">5:非常に多かった</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>3. 時間的切迫感: 文字の入力中、時間に追われているようなプレッシャーをどれくらい感じましたか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_temporal" value="1" id="tlx_temporal-1"><label for="tlx_temporal-1">1:全く感じなかった</label>
+          <input type="radio" name="tlx_temporal" value="2" id="tlx_temporal-2"><label for="tlx_temporal-2">2</label>
+          <input type="radio" name="tlx_temporal" value="3" id="tlx_temporal-3"><label for="tlx_temporal-3">3</label>
+          <input type="radio" name="tlx_temporal" value="4" id="tlx_temporal-4"><label for="tlx_temporal-4">4</label>
+          <input type="radio" name="tlx_temporal" value="5" id="tlx_temporal-5"><label for="tlx_temporal-5">5:非常に感じた</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>4. 作業成績の自己評価: 今回の実験の目標（速く正確な入力）を、どれくらいうまく達成できたと思いますか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_performance" value="1" id="tlx_performance-1"><label for="tlx_performance-1">1:全くうまくできなかった</label>
+          <input type="radio" name="tlx_performance" value="2" id="tlx_performance-2"><label for="tlx_performance-2">2</label>
+          <input type="radio" name="tlx_performance" value="3" id="tlx_performance-3"><label for="tlx_performance-3">3</label>
+          <input type="radio" name="tlx_performance" value="4" id="tlx_performance-4"><label for="tlx_performance-4">4</label>
+          <input type="radio" name="tlx_performance" value="5" id="tlx_performance-5"><label for="tlx_performance-5">5:完璧にできた</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>5. 努力: 設定された目標を達成するために、どれくらい精神的・身体的な努力をする必要がありましたか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_effort" value="1" id="tlx_effort-1"><label for="tlx_effort-1">1:ほとんど必要なかった</label>
+          <input type="radio" name="tlx_effort" value="2" id="tlx_effort-2"><label for="tlx_effort-2">2</label>
+          <input type="radio" name="tlx_effort" value="3" id="tlx_effort-3"><label for="tlx_effort-3">3</label>
+          <input type="radio" name="tlx_effort" value="4" id="tlx_effort-4"><label for="tlx_effort-4">4</label>
+          <input type="radio" name="tlx_effort" value="5" id="tlx_effort-5"><label for="tlx_effort-5">5:非常に多くの努力が必要だった</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>6. フラストレーション: 入力作業中に、イライラしたり、不満に感じたりすることはどれくらいありましたか？</label>
+        <div class="rating">
+          <input type="radio" name="tlx_frustration" value="1" id="tlx_frustration-1"><label for="tlx_frustration-1">1:全くなかった</label>
+          <input type="radio" name="tlx_frustration" value="2" id="tlx_frustration-2"><label for="tlx_frustration-2">2</label>
+          <input type="radio" name="tlx_frustration" value="3" id="tlx_frustration-3"><label for="tlx_frustration-3">3</label>
+          <input type="radio" name="tlx_frustration" value="4" id="tlx_frustration-4"><label for="tlx_frustration-4">4</label>
+          <input type="radio" name="tlx_frustration" value="5" id="tlx_frustration-5"><label for="tlx_frustration-5">5:非常にあった</label>
+        </div>
       </div>
       
       <button onclick="completeSurvey()" id="complete-btn">実験完了・データダウンロード</button>
@@ -250,12 +369,41 @@ function showSurvey() {
 
 // アンケート完了とデータダウンロード
 function completeSurvey() {
+  const sus_answers = [];
+  for (let i = 1; i <= 10; i++) {
+    const answer = document.querySelector(`input[name="sus${i}"]:checked`)?.value;
+    sus_answers.push(answer ? parseInt(answer, 10) : null);
+  }
+
+  let sus_score = null;
+  if (sus_answers.every(a => a !== null)) {
+      const score_q1 = sus_answers[0] - 1;
+      const score_q2 = 5 - sus_answers[1];
+      const score_q3 = sus_answers[2] - 1;
+      const score_q4 = 5 - sus_answers[3];
+      const score_q5 = sus_answers[4] - 1;
+      const score_q6 = 5 - sus_answers[5];
+      const score_q7 = sus_answers[6] - 1;
+      const score_q8 = 5 - sus_answers[7];
+      const score_q9 = sus_answers[8] - 1;
+      const score_q10 = 5 - sus_answers[9];
+      const total_score = score_q1 + score_q2 + score_q3 + score_q4 + score_q5 + score_q6 + score_q7 + score_q8 + score_q9 + score_q10;
+      sus_score = total_score * 2.5;
+  }
+  
   const surveyData = {
-    ease: document.querySelector('input[name="ease"]:checked')?.value || '',
-    satisfaction: document.querySelector('input[name="satisfaction"]:checked')?.value || '',
-    speed_feeling: document.querySelector('input[name="speed_feeling"]:checked')?.value || '',
-    usability: document.querySelector('input[name="usability"]:checked')?.value || '',
-    comments: document.getElementById('comments').value
+    sus: {
+      q1: sus_answers[0], q2: sus_answers[1], q3: sus_answers[2], q4: sus_answers[3], q5: sus_answers[4],
+      q6: sus_answers[5], q7: sus_answers[6], q8: sus_answers[7], q9: sus_answers[8], q10: sus_answers[9]
+    },
+    tlx: {
+      mental: document.querySelector('input[name="tlx_mental"]:checked')?.value || '',
+      physical: document.querySelector('input[name="tlx_physical"]:checked')?.value || '',
+      temporal: document.querySelector('input[name="tlx_temporal"]:checked')?.value || '',
+      performance: document.querySelector('input[name="tlx_performance"]:checked')?.value || '',
+      effort: document.querySelector('input[name="tlx_effort"]:checked')?.value || '',
+      frustration: document.querySelector('input[name="tlx_frustration"]:checked')?.value || ''
+    }
   };
   
   const allInterCharMs = experimentData.flatMap(item => item.interCharMs.slice(1));
@@ -267,6 +415,9 @@ function completeSurvey() {
     timestamp: new Date().toISOString(),
     experimentData: experimentData,
     surveyData: surveyData,
+    surveySummary: {
+      sus_score: sus_score
+    },
     summary: {
       totalSentences: sentences.length,
       completedSentences: experimentData.filter(item => !item.interrupted).length,
