@@ -27,14 +27,32 @@ button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   margin-top: 1rem;
-  background-color: #3498db;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-button:hover {
+/* プライマリボタン (青) */
+.btn-primary {
+  background-color: #3498db; /* 青色 */
+}
+
+.btn-primary:hover {
   background-color: #2980b9;
+}
+
+#next-btn {
+  /* スタイルは .btn-primary に移行 */
+}
+
+#interrupt-btn {
+  background-color: #e74c3c; /* 赤色 */
+}
+
+#interrupt-btn:hover {
+  background-color: #c0392b;
 }
 
 /* 入力フィードバック用スタイル */
