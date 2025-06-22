@@ -14,6 +14,7 @@ let inputStarted = false;
 let requiredChars = [];
 let matchedIndexes = [];
 let isInputComplete = false;
+let charTimes = [];
 
 const target = document.getElementById("target-sentence");
 const input = document.getElementById("user-input");
@@ -59,6 +60,11 @@ function updateInputFeedback(inputText) {
   let feedbackHTML = '';
   let matchPos = 0;
   matchedIndexes = [];
+  
+  if (inputText.length > charTimes.length) {
+    charTimes.push(Date.now());
+  }
+  
   for (let i = 0; i < inputText.length; i++) {
     if (
       matchPos < requiredChars.length &&
@@ -81,6 +87,9 @@ function updateInputFeedback(inputText) {
     const originalText = sentences[currentIndex];
     const accuracy = calculateAccuracy(originalText, inputText);
     const speed = originalText.length / inputTime; // 文字/秒
+    
+    const interCharMs = charTimes.map((t, i) => i ? t - charTimes[i-1] : 0);
+    
     experimentData.push({
       sentenceIndex: currentIndex + 1,
       originalText: originalText,
@@ -88,7 +97,9 @@ function updateInputFeedback(inputText) {
       inputTime: inputTime,
       speed: speed,
       accuracy: accuracy,
-      msd: calculateMSD(originalText, inputText)
+      msd: calculateMSD(originalText, inputText),
+      charTimes: charTimes,
+      interCharMs: interCharMs
     });
     // 「次の文へ」ボタンを表示
     nextBtn.style.display = 'inline-block';
@@ -107,6 +118,7 @@ function showSentence(index) {
   isInputComplete = false;
   inputFeedback.innerHTML = '';
   nextBtn.style.display = 'none';
+  charTimes = [];
 }
 
 // 入力開始を検知
@@ -201,6 +213,10 @@ function completeSurvey() {
     comments: document.getElementById('comments').value
   };
   
+  const allInterCharMs = experimentData.flatMap(item => item.interCharMs.slice(1));
+  const averageInterCharMs = allInterCharMs.length > 0 ? 
+    allInterCharMs.reduce((sum, ms) => sum + ms, 0) / allInterCharMs.length : 0;
+  
   // 実験データとアンケートデータを統合
   const completeData = {
     timestamp: new Date().toISOString(),
@@ -210,7 +226,8 @@ function completeSurvey() {
       totalSentences: sentences.length,
       averageSpeed: experimentData.reduce((sum, item) => sum + item.speed, 0) / experimentData.length,
       averageAccuracy: experimentData.reduce((sum, item) => sum + item.accuracy, 0) / experimentData.length,
-      totalTime: experimentData.reduce((sum, item) => sum + item.inputTime, 0)
+      totalTime: experimentData.reduce((sum, item) => sum + item.inputTime, 0),
+      averageInterCharMs: averageInterCharMs
     }
   };
   
