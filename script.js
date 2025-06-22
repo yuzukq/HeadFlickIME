@@ -391,6 +391,8 @@ function completeSurvey() {
       sus_score = total_score * 2.5;
   }
   
+  const participantId = localStorage.getItem('participantId') || 'unknown';
+
   const surveyData = {
     sus: {
       q1: sus_answers[0], q2: sus_answers[1], q3: sus_answers[2], q4: sus_answers[3], q5: sus_answers[4],
@@ -412,6 +414,7 @@ function completeSurvey() {
   
   // 実験データとアンケートデータを統合
   const completeData = {
+    participantId: participantId,
     timestamp: new Date().toISOString(),
     experimentData: experimentData,
     surveyData: surveyData,

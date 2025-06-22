@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>練習ページ</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #timer {
+      font-size: 2.5em;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      color: #2c3e50;
+    }
+    #timer.warning {
+      color: #e74c3c; /* 警告色（赤） */
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .practice-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+    }
+    #practice-input {
+      width: 100%;
+      height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="practice-container">
+    <h1>練習</h1>
+    <p>4分間、自由に文字を入力してシステムの操作に慣れてください。<br>時間が来ると自動的に測定が始まります。</p>
+    
+    <div id="timer">04:00</div>
+    
+    <section id="input-area">
+      <h2>練習用入力欄</h2>
+      <textarea id="practice-input" placeholder="自由に入力してください"></textarea>
+    </section>
+
+    <section id="control-buttons">
+       <button id="start-measurement-btn">今すぐ測定へ進む</button>
+    </section>
+  </div>
+
+  <script src="practice.js"></script>
+</body>
+</html>

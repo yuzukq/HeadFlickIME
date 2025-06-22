@@ -3,31 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>入力実験ページ</title>
+  <title>JKJ3入力実験 - スタートページ</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .start-container {
+      text-align: center;
+      max-width: 600px;
+      padding: 40px;
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .start-container h1 {
+      font-size: 2em;
+    }
+    .start-container input {
+      width: 80%;
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 1em;
+    }
+    .start-container button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <h1>JKJ3入力精度測定ツール</h1>
-    <p>下の欄に表示される文章を入力してください。</p>
+  <div class="start-container">
+    <h1>JKJ3入力実験</h1>
+    <p>
+      この実験では、ヘッドフリックによる日本語入力の性能を評価します。<br>
+      まず、あなたの名前またはIDを入力して、「練習を始める」ボタンを押してください。
+    </p>
+    
+    <form onsubmit="startPractice(event)">
+      <input type="text" id="participant-id" placeholder="被験者名 / ID" required>
+      <br>
+      <button type="submit">練習を始める</button>
+    </form>
+  </div>
 
-    <section id="test-area">
-      <h2>入力対象</h2>
-      <div id="target-sentence">（ここに文章が表示されます）</div>
-    </section>
-
-    <section id="input-area">
-      <div id="input-feedback" class="feedback-area"></div>
-      <h2>入力欄</h2>
-      <textarea id="user-input" rows="4" placeholder="ここに入力してください"></textarea>
-    </section>
-
-    <section id="control-buttons">
-      <button onclick="nextSentence()" id="next-btn">次の文へ</button>
-      <button onclick="interruptSentence()" id="interrupt-btn">中断</button>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
+  <script>
+    function startPractice(event) {
+      event.preventDefault(); // フォームのデフォルト送信をキャンセル
+      const participantId = document.getElementById('participant-id').value;
+      if (participantId) {
+        localStorage.setItem('participantId', participantId);
+        window.location.href = 'practice.html';
+      }
+    }
+  </script>
 </body>
 </html>

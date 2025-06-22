@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>入力実験ページ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>JKJ3入力精度測定ツール</h1>
+    <p>下の欄に表示される文章を入力してください。</p>
+
+    <section id="test-area">
+      <h2>入力対象</h2>
+      <div id="target-sentence">（ここに文章が表示されます）</div>
+    </section>
+
+    <section id="input-area">
+      <div id="input-feedback" class="feedback-area"></div>
+      <h2>入力欄</h2>
+      <textarea id="user-input" rows="4" placeholder="ここに入力してください"></textarea>
+    </section>
+
+    <section id="control-buttons">
+      <button onclick="nextSentence()" id="next-btn">次の文へ</button>
+      <button onclick="interruptSentence()" id="interrupt-btn">中断</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
