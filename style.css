@@ -27,14 +27,25 @@ button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   margin-top: 1rem;
-  background-color: #3498db;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-button:hover {
+#next-btn {
+  background-color: #3498db; /* 青色 */
+}
+
+#next-btn:hover {
   background-color: #2980b9;
+}
+
+#interrupt-btn {
+  background-color: #e74c3c; /* 赤色 */
+}
+
+#interrupt-btn:hover {
+  background-color: #c0392b;
 }
 
 /* 入力フィードバック用スタイル */

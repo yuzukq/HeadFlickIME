@@ -15,11 +15,12 @@ let requiredChars = [];
 let matchedIndexes = [];
 let isInputComplete = false;
 let charTimes = [];
+let isInterrupted = false;  // 中断フラグを追加
 
 const target = document.getElementById("target-sentence");
 const input = document.getElementById("user-input");
 const inputFeedback = document.getElementById("input-feedback");
-const nextBtn = document.querySelector('#control-buttons button');
+const nextBtn = document.getElementById('next-btn');
 
 // 最小編集距離（MSD）を計算する関数
 function calculateMSD(str1, str2) {
@@ -62,6 +63,38 @@ function calculateCER(original, input) {
   const inputLength = input.length;  // 総入力文字数
   if (inputLength === 0) return 0;
   return msd / inputLength;
+}
+
+// 中断ボタンの処理
+function interruptSentence() {
+  if (inputStarted && !isInputComplete) {
+    isInterrupted = true;
+    const endTime = Date.now();
+    const inputTime = (endTime - startTime) / 1000; // 秒
+    const originalText = sentences[currentIndex];
+    const inputText = input.value;
+    const accuracy = calculateAccuracy(originalText, inputText);
+    const speed = inputText.length > 0 ? inputText.length / inputTime : 0; // 文字/秒
+    
+    const interCharMs = charTimes.map((t, i) => i ? t - charTimes[i-1] : 0);
+    
+    experimentData.push({
+      sentenceIndex: currentIndex + 1,
+      originalText: originalText,
+      inputText: inputText,
+      inputTime: inputTime,
+      speed: speed,
+      accuracy: accuracy,
+      msd: calculateMSD(originalText, inputText),
+      cer: calculateCER(originalText, inputText),
+      charTimes: charTimes,
+      interCharMs: interCharMs,
+      interrupted: true  // 中断フラグを追加
+    });
+    
+    // 次の文へ進む
+    nextSentence();
+  }
 }
 
 // 入力の正確性を視覚的に表示（部分列探索）
@@ -109,7 +142,8 @@ function updateInputFeedback(inputText) {
       msd: calculateMSD(originalText, inputText),
       cer: calculateCER(originalText, inputText),
       charTimes: charTimes,
-      interCharMs: interCharMs
+      interCharMs: interCharMs,
+      interrupted: false  // 中断フラグを追加
     });
     // 「次の文へ」ボタンを表示
     nextBtn.style.display = 'inline-block';
@@ -126,6 +160,7 @@ function showSentence(index) {
   requiredChars = sentences[index].split('');
   matchedIndexes = [];
   isInputComplete = false;
+  isInterrupted = false;  // 中断フラグをリセット
   inputFeedback.innerHTML = '';
   nextBtn.style.display = 'none';
   charTimes = [];
@@ -234,9 +269,17 @@ function completeSurvey() {
     surveyData: surveyData,
     summary: {
       totalSentences: sentences.length,
-      averageSpeed: experimentData.reduce((sum, item) => sum + item.speed, 0) / experimentData.length,
-      averageAccuracy: experimentData.reduce((sum, item) => sum + item.accuracy, 0) / experimentData.length,
-      averageCER: experimentData.reduce((sum, item) => sum + item.cer, 0) / experimentData.length,
+      completedSentences: experimentData.filter(item => !item.interrupted).length,
+      interruptedSentences: experimentData.filter(item => item.interrupted).length,
+      averageSpeed: experimentData.filter(item => !item.interrupted).length > 0 ? 
+        experimentData.filter(item => !item.interrupted).reduce((sum, item) => sum + item.speed, 0) / 
+        experimentData.filter(item => !item.interrupted).length : 0,
+      averageAccuracy: experimentData.filter(item => !item.interrupted).length > 0 ? 
+        experimentData.filter(item => !item.interrupted).reduce((sum, item) => sum + item.accuracy, 0) / 
+        experimentData.filter(item => !item.interrupted).length : 0,
+      averageCER: experimentData.filter(item => !item.interrupted).length > 0 ? 
+        experimentData.filter(item => !item.interrupted).reduce((sum, item) => sum + item.cer, 0) / 
+        experimentData.filter(item => !item.interrupted).length : 0,
       totalTime: experimentData.reduce((sum, item) => sum + item.inputTime, 0),
       averageInterCharMs: averageInterCharMs
     }
