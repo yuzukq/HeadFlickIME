@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JKJ3入力実験 - スタートページ</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
   <style>
     body {
       display: flex;
@@ -47,9 +47,9 @@
     </p>
     
     <form onsubmit="startPractice(event)">
-      <input type="text" id="participant-id" placeholder="被験者名 / ID" required>
+      <input type="text" id="participant-id" placeholder="お名前" required>
       <br>
-      <button type="submit">練習を始める</button>
+      <button type="submit" class="btn-primary">練習を始める</button>
     </form>
   </div>
 
@@ -59,7 +59,7 @@
       const participantId = document.getElementById('participant-id').value;
       if (participantId) {
         localStorage.setItem('participantId', participantId);
-        window.location.href = 'practice.html';
+        window.location.href = 'pages/practice.html';
       }
     }
   </script>
