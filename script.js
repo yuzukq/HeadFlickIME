@@ -55,6 +55,15 @@ function calculateAccuracy(original, input) {
   return Math.max(0, 100 - (msd / maxLen) * 100);
 }
 
+// CER (Character Error Rate) を計算する関数
+// 総入力文字数で割ることで、入力文字数に対する誤り率を計算
+function calculateCER(original, input) {
+  const msd = calculateMSD(original, input);
+  const inputLength = input.length;  // 総入力文字数
+  if (inputLength === 0) return 0;
+  return msd / inputLength;
+}
+
 // 入力の正確性を視覚的に表示（部分列探索）
 function updateInputFeedback(inputText) {
   let feedbackHTML = '';
@@ -98,6 +107,7 @@ function updateInputFeedback(inputText) {
       speed: speed,
       accuracy: accuracy,
       msd: calculateMSD(originalText, inputText),
+      cer: calculateCER(originalText, inputText),
       charTimes: charTimes,
       interCharMs: interCharMs
     });
@@ -226,6 +236,7 @@ function completeSurvey() {
       totalSentences: sentences.length,
       averageSpeed: experimentData.reduce((sum, item) => sum + item.speed, 0) / experimentData.length,
       averageAccuracy: experimentData.reduce((sum, item) => sum + item.accuracy, 0) / experimentData.length,
+      averageCER: experimentData.reduce((sum, item) => sum + item.cer, 0) / experimentData.length,
       totalTime: experimentData.reduce((sum, item) => sum + item.inputTime, 0),
       averageInterCharMs: averageInterCharMs
     }
