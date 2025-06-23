@@ -67,6 +67,21 @@ function calculateCER(original, input) {
 
 // 中断ボタンの処理
 function interruptSentence() {
+  // カウントダウン中の場合は停止
+  if (isCountingDown) {
+    if (countdownTimer) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+    }
+    isCountingDown = false;
+    const overlay = document.getElementById('countdown-overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
+    nextSentence();
+    return;
+  }
+  
   if (inputStarted && !isInputComplete) {
     isInterrupted = true;
     const endTime = Date.now();
@@ -161,16 +176,21 @@ function showSentence(index) {
   matchedIndexes = [];
   isInputComplete = false;
   isInterrupted = false;  // 中断フラグをリセット
+  isCountingDown = false; // カウントダウンフラグをリセット
   inputFeedback.innerHTML = '';
   nextBtn.style.display = 'none';
   charTimes = [];
-}
-
-// 入力開始を検知
-function onInputStart() {
-  if (!inputStarted) {
-    startTime = Date.now();
-    inputStarted = true;
+  
+  // カウントダウンタイマーをクリア
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+  
+  // オーバーレイを非表示
+  const overlay = document.getElementById('countdown-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
   }
 }
 
@@ -462,11 +482,54 @@ function downloadData(data) {
   URL.revokeObjectURL(url);
 }
 
+// カウントダウン機能
+let countdownTimer = null;
+let isCountingDown = false;
+
+function startCountdown() {
+  if (isCountingDown) return;
+  
+  isCountingDown = true;
+  const overlay = document.getElementById('countdown-overlay');
+  const countdownNumber = document.getElementById('countdown-number');
+  
+  overlay.style.display = 'flex';
+  let count = 3;
+  countdownNumber.textContent = count;
+  
+  countdownTimer = setInterval(() => {
+    count--;
+    if (count > 0) {
+      countdownNumber.textContent = count;
+    } else {
+      clearInterval(countdownTimer);
+      overlay.style.display = 'none';
+      // カウントダウン終了後に測定開始
+      startMeasurement();
+    }
+  }, 1000);
+}
+
+function startMeasurement() {
+  // 実際の測定開始処理
+  startTime = Date.now();
+  inputStarted = true;
+  isCountingDown = false; // ここでfalseに設定
+  input.focus();
+}
+
 // イベントリスナーを追加
 input.addEventListener('input', (e) => {
-  if (!isInputComplete) {
-    onInputStart();
+  if (!isInputComplete && inputStarted) {
     updateInputFeedback(e.target.value);
+  }
+});
+
+// フォーカスイベントでカウントダウンを開始
+input.addEventListener('focus', () => {
+  if (!inputStarted && !isCountingDown) {
+    input.blur(); // 一度フォーカスを外す
+    startCountdown();
   }
 });
 
