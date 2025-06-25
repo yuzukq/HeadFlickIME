@@ -1,9 +1,9 @@
 const sentences = [
+  "ゆめをみる",
   "はるのひかり",
   "やまをこえる",
   "まちをあるく",
   "わたしはうたう",
-  "ゆめをみる"
 ];
 
 let currentIndex = 0;
@@ -212,10 +212,46 @@ function showSurvey() {
       <h3>アンケート</h3>
       <p>各項目について、最も当てはまるものを選択してください。</p>
 
+      <h4>入力方法に関する質問</h4>
+      <div class="survey-question">
+        <label>1. 普段からスマートフォン等でフリック入力を使用していますか。</label>
+        <div class="rating">
+          <input type="radio" name="flick_input" value="yes" id="flick_input-yes"><label for="flick_input-yes">はい</label>
+          <input type="radio" name="flick_input" value="no" id="flick_input-no"><label for="flick_input-no">いいえ</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>2. 瞼を使った選択動作で、自身の意図に反して動作してしまうことはどれくらいありましたか？</label>
+        <div class="rating">
+          <input type="radio" name="eyelid_misaction" value="1" id="eyelid_misaction-1"><label for="eyelid_misaction-1">1回</label>
+          <input type="radio" name="eyelid_misaction" value="2" id="eyelid_misaction-2"><label for="eyelid_misaction-2">2回</label>
+          <input type="radio" name="eyelid_misaction" value="3" id="eyelid_misaction-3"><label for="eyelid_misaction-3">3回</label>
+          <input type="radio" name="eyelid_misaction" value="4" id="eyelid_misaction-4"><label for="eyelid_misaction-4">4回</label>
+          <input type="radio" name="eyelid_misaction" value="5" id="eyelid_misaction-5"><label for="eyelid_misaction-5">5回以上</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>3. 頭の向きによるポインティング動作で、自身の意図に反して動作してしまうことはどれくらいありましたか？</label>
+        <div class="rating">
+          <input type="radio" name="head_misaction" value="1" id="head_misaction-1"><label for="head_misaction-1">1回</label>
+          <input type="radio" name="head_misaction" value="2" id="head_misaction-2"><label for="head_misaction-2">2回</label>
+          <input type="radio" name="head_misaction" value="3" id="head_misaction-3"><label for="head_misaction-3">3回</label>
+          <input type="radio" name="head_misaction" value="4" id="head_misaction-4"><label for="head_misaction-4">4回</label>
+          <input type="radio" name="head_misaction" value="5" id="head_misaction-5"><label for="head_misaction-5">5～10回</label>
+          <input type="radio" name="head_misaction" value="6" id="head_misaction-6"><label for="head_misaction-6">10回以上</label>
+        </div>
+      </div>
+      <div class="survey-question">
+        <label>4. 特に入力しずらかった位置(文字)はありますか</label>
+        <div class="text-input">
+          <textarea name="difficult_chars" id="difficult_chars" rows="3" cols="50" placeholder="例：あ行の「あ」が選びにくかった、など"></textarea>
+        </div>
+      </div>
+
       <!-- SUS (システムユーザビリティスケール) -->
       <h4>システム全体の使いやすさ (SUS)</h4>
       <div class="survey-question">
-        <label>1. この入力方法は、今後も頻繁に使いたいと思える。</label>
+        <label>1. この入力方法は、今後も使いたいと思える。</label>
         <div class="rating">
           <input type="radio" name="sus1" value="1" id="sus1-1"><label for="sus1-1">1:全くそう思わない</label>
           <input type="radio" name="sus1" value="2" id="sus1-2"><label for="sus1-2">2</label>
@@ -315,68 +351,6 @@ function showSurvey() {
         </div>
       </div>
 
-      <!-- NASA-TLX -->
-      <h4>作業中の負担感 (NASA-TLX)</h4>
-      <div class="survey-question">
-        <label>1. 知的要求: 文字を入力するために、どれくらい集中したり、考えたりする必要がありましたか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_mental" value="1" id="tlx_mental-1"><label for="tlx_mental-1">1:非常に少なかった</label>
-          <input type="radio" name="tlx_mental" value="2" id="tlx_mental-2"><label for="tlx_mental-2">2</label>
-          <input type="radio" name="tlx_mental" value="3" id="tlx_mental-3"><label for="tlx_mental-3">3</label>
-          <input type="radio" name="tlx_mental" value="4" id="tlx_mental-4"><label for="tlx_mental-4">4</label>
-          <input type="radio" name="tlx_mental" value="5" id="tlx_mental-5"><label for="tlx_mental-5">5:非常に多かった</label>
-        </div>
-      </div>
-       <div class="survey-question">
-        <label>2. 身体的要求: 文字を入力するために、頭を動かすなどの身体的な活動はどれくらい必要でしたか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_physical" value="1" id="tlx_physical-1"><label for="tlx_physical-1">1:非常に少なかった</label>
-          <input type="radio" name="tlx_physical" value="2" id="tlx_physical-2"><label for="tlx_physical-2">2</label>
-          <input type="radio" name="tlx_physical" value="3" id="tlx_physical-3"><label for="tlx_physical-3">3</label>
-          <input type="radio" name="tlx_physical" value="4" id="tlx_physical-4"><label for="tlx_physical-4">4</label>
-          <input type="radio" name="tlx_physical" value="5" id="tlx_physical-5"><label for="tlx_physical-5">5:非常に多かった</label>
-        </div>
-      </div>
-      <div class="survey-question">
-        <label>3. 時間的切迫感: 文字の入力中、時間に追われているようなプレッシャーをどれくらい感じましたか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_temporal" value="1" id="tlx_temporal-1"><label for="tlx_temporal-1">1:全く感じなかった</label>
-          <input type="radio" name="tlx_temporal" value="2" id="tlx_temporal-2"><label for="tlx_temporal-2">2</label>
-          <input type="radio" name="tlx_temporal" value="3" id="tlx_temporal-3"><label for="tlx_temporal-3">3</label>
-          <input type="radio" name="tlx_temporal" value="4" id="tlx_temporal-4"><label for="tlx_temporal-4">4</label>
-          <input type="radio" name="tlx_temporal" value="5" id="tlx_temporal-5"><label for="tlx_temporal-5">5:非常に感じた</label>
-        </div>
-      </div>
-      <div class="survey-question">
-        <label>4. 作業成績の自己評価: 今回の実験の目標（速く正確な入力）を、どれくらいうまく達成できたと思いますか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_performance" value="1" id="tlx_performance-1"><label for="tlx_performance-1">1:全くうまくできなかった</label>
-          <input type="radio" name="tlx_performance" value="2" id="tlx_performance-2"><label for="tlx_performance-2">2</label>
-          <input type="radio" name="tlx_performance" value="3" id="tlx_performance-3"><label for="tlx_performance-3">3</label>
-          <input type="radio" name="tlx_performance" value="4" id="tlx_performance-4"><label for="tlx_performance-4">4</label>
-          <input type="radio" name="tlx_performance" value="5" id="tlx_performance-5"><label for="tlx_performance-5">5:完璧にできた</label>
-        </div>
-      </div>
-      <div class="survey-question">
-        <label>5. 努力: 設定された目標を達成するために、どれくらい精神的・身体的な努力をする必要がありましたか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_effort" value="1" id="tlx_effort-1"><label for="tlx_effort-1">1:ほとんど必要なかった</label>
-          <input type="radio" name="tlx_effort" value="2" id="tlx_effort-2"><label for="tlx_effort-2">2</label>
-          <input type="radio" name="tlx_effort" value="3" id="tlx_effort-3"><label for="tlx_effort-3">3</label>
-          <input type="radio" name="tlx_effort" value="4" id="tlx_effort-4"><label for="tlx_effort-4">4</label>
-          <input type="radio" name="tlx_effort" value="5" id="tlx_effort-5"><label for="tlx_effort-5">5:非常に多くの努力が必要だった</label>
-        </div>
-      </div>
-      <div class="survey-question">
-        <label>6. フラストレーション: 入力作業中に、イライラしたり、不満に感じたりすることはどれくらいありましたか？</label>
-        <div class="rating">
-          <input type="radio" name="tlx_frustration" value="1" id="tlx_frustration-1"><label for="tlx_frustration-1">1:全くなかった</label>
-          <input type="radio" name="tlx_frustration" value="2" id="tlx_frustration-2"><label for="tlx_frustration-2">2</label>
-          <input type="radio" name="tlx_frustration" value="3" id="tlx_frustration-3"><label for="tlx_frustration-3">3</label>
-          <input type="radio" name="tlx_frustration" value="4" id="tlx_frustration-4"><label for="tlx_frustration-4">4</label>
-          <input type="radio" name="tlx_frustration" value="5" id="tlx_frustration-5"><label for="tlx_frustration-5">5:非常にあった</label>
-        </div>
-      </div>
       
       <button onclick="completeSurvey()" id="complete-btn">実験完了・データダウンロード</button>
     </div>
@@ -413,17 +387,15 @@ function completeSurvey() {
   const participantId = localStorage.getItem('participantId') || 'unknown';
 
   const surveyData = {
+    additional: {
+      flick_input: document.querySelector('input[name="flick_input"]:checked')?.value || '',
+      eyelid_misaction: document.querySelector('input[name="eyelid_misaction"]:checked')?.value || '',
+      head_misaction: document.querySelector('input[name="head_misaction"]:checked')?.value || '',
+      difficult_chars: document.getElementById('difficult_chars')?.value || ''
+    },
     sus: {
       q1: sus_answers[0], q2: sus_answers[1], q3: sus_answers[2], q4: sus_answers[3], q5: sus_answers[4],
       q6: sus_answers[5], q7: sus_answers[6], q8: sus_answers[7], q9: sus_answers[8], q10: sus_answers[9]
-    },
-    tlx: {
-      mental: document.querySelector('input[name="tlx_mental"]:checked')?.value || '',
-      physical: document.querySelector('input[name="tlx_physical"]:checked')?.value || '',
-      temporal: document.querySelector('input[name="tlx_temporal"]:checked')?.value || '',
-      performance: document.querySelector('input[name="tlx_performance"]:checked')?.value || '',
-      effort: document.querySelector('input[name="tlx_effort"]:checked')?.value || '',
-      frustration: document.querySelector('input[name="tlx_frustration"]:checked')?.value || ''
     }
   };
   
