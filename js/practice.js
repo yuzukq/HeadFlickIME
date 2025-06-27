@@ -8,7 +8,7 @@ const sentences = [
 ];
 
 // 4分間タイマー関連
-const PRACTICE_DURATION_SEC = 240; // 4分
+const PRACTICE_DURATION_SEC = 180; // 4分
 let timeLeft = PRACTICE_DURATION_SEC;
 let timerInterval;
 
