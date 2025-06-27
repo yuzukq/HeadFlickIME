@@ -1,0 +1,104 @@
+{
+  "participantId": "３６ (3)",
+  "timestamp": "2025-06-27T05:59:19.811Z",
+  "experimentData": [
+    {
+      "sentenceIndex": 1,
+      "originalText": "なかの",
+      "inputText": "",
+      "inputTime": 0.358,
+      "speed": 0,
+      "accuracy": 0,
+      "msd": 3,
+      "cer": 0,
+      "charTimes": [],
+      "interCharMs": [],
+      "interrupted": true
+    },
+    {
+      "sentenceIndex": 2,
+      "originalText": "ひなた",
+      "inputText": "",
+      "inputTime": 0.133,
+      "speed": 0,
+      "accuracy": 0,
+      "msd": 3,
+      "cer": 0,
+      "charTimes": [],
+      "interCharMs": [],
+      "interrupted": true
+    },
+    {
+      "sentenceIndex": 3,
+      "originalText": "ゆめをみる",
+      "inputText": "",
+      "inputTime": 0.219,
+      "speed": 0,
+      "accuracy": 0,
+      "msd": 5,
+      "cer": 0,
+      "charTimes": [],
+      "interCharMs": [],
+      "interrupted": true
+    },
+    {
+      "sentenceIndex": 4,
+      "originalText": "あさになる",
+      "inputText": "",
+      "inputTime": 0.173,
+      "speed": 0,
+      "accuracy": 0,
+      "msd": 5,
+      "cer": 0,
+      "charTimes": [],
+      "interCharMs": [],
+      "interrupted": true
+    },
+    {
+      "sentenceIndex": 5,
+      "originalText": "わたしはうたう",
+      "inputText": "",
+      "inputTime": 0.303,
+      "speed": 0,
+      "accuracy": 0,
+      "msd": 7,
+      "cer": 0,
+      "charTimes": [],
+      "interCharMs": [],
+      "interrupted": true
+    }
+  ],
+  "surveyData": {
+    "additional": {
+      "flick_input": "yes",
+      "eyelid_misaction": "",
+      "head_misaction": "",
+      "difficult_chars": ""
+    },
+    "sus": {
+      "q1": 5,
+      "q2": 1,
+      "q3": 5,
+      "q4": 1,
+      "q5": 5,
+      "q6": 1,
+      "q7": 5,
+      "q8": 1,
+      "q9": 1,
+      "q10": 1
+    }
+  },
+  "surveySummary": {
+    "sus_score": 90
+  },
+  "summary": {
+    "totalSentences": 5,
+    "completedSentences": 0,
+    "interruptedSentences": 5,
+    "averageSpeed": 0,
+    "averageAccuracy": 0,
+    "averageCER": 0,
+    "totalTime": 1.186,
+    "averageInterCharMs": 0
+  }
+}
