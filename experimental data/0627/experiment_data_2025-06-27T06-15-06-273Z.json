@@ -1,0 +1,168 @@
+{
+  "participantId": "10",
+  "timestamp": "2025-06-27T06:15:06.272Z",
+  "experimentData": [
+    {
+      "sentenceIndex": 1,
+      "originalText": "なかの",
+      "inputText": "なかなの",
+      "inputTime": 10.759,
+      "speed": 0.278836323078353,
+      "accuracy": 75,
+      "msd": 1,
+      "cer": 0.25,
+      "charTimes": [
+        1751004561252,
+        1751004564053,
+        1751004565792,
+        1751004569077
+      ],
+      "interCharMs": [
+        0,
+        2801,
+        1739,
+        3285
+      ],
+      "interrupted": false
+    },
+    {
+      "sentenceIndex": 2,
+      "originalText": "ひなた",
+      "inputText": "ひなた",
+      "inputTime": 39.709,
+      "speed": 0.07554962351104283,
+      "accuracy": 100,
+      "msd": 0,
+      "cer": 0,
+      "charTimes": [
+        1751004589507,
+        1751004620878,
+        1751004623821
+      ],
+      "interCharMs": [
+        0,
+        31371,
+        2943
+      ],
+      "interrupted": false
+    },
+    {
+      "sentenceIndex": 3,
+      "originalText": "ゆめをみる",
+      "inputText": "ゆめをみる",
+      "inputTime": 24.432,
+      "speed": 0.20464963981663392,
+      "accuracy": 100,
+      "msd": 0,
+      "cer": 0,
+      "charTimes": [
+        1751004642814,
+        1751004647843,
+        1751004651326,
+        1751004655935,
+        1751004662393
+      ],
+      "interCharMs": [
+        0,
+        5029,
+        3483,
+        4609,
+        6458
+      ],
+      "interrupted": false
+    },
+    {
+      "sentenceIndex": 4,
+      "originalText": "あさになる",
+      "inputText": "うあさになる",
+      "inputTime": 20.424,
+      "speed": 0.24481002741872307,
+      "accuracy": 83.33333333333334,
+      "msd": 1,
+      "cer": 0.16666666666666666,
+      "charTimes": [
+        1751004681126,
+        1751004683602,
+        1751004686769,
+        1751004691264,
+        1751004693221,
+        1751004698817
+      ],
+      "interCharMs": [
+        0,
+        2476,
+        3167,
+        4495,
+        1957,
+        5596
+      ],
+      "interrupted": false
+    },
+    {
+      "sentenceIndex": 5,
+      "originalText": "わたしはうたう",
+      "inputText": "をわたしなはうたう",
+      "inputTime": 27.816,
+      "speed": 0.25165372447512224,
+      "accuracy": 77.77777777777777,
+      "msd": 2,
+      "cer": 0.2222222222222222,
+      "charTimes": [
+        1751004717283,
+        1751004719027,
+        1751004722408,
+        1751004726995,
+        1751004729956,
+        1751004732230,
+        1751004736734,
+        1751004739562,
+        1751004742070
+      ],
+      "interCharMs": [
+        0,
+        1744,
+        3381,
+        4587,
+        2961,
+        2274,
+        4504,
+        2828,
+        2508
+      ],
+      "interrupted": false
+    }
+  ],
+  "surveyData": {
+    "additional": {
+      "flick_input": "yes",
+      "eyelid_misaction": "2",
+      "head_misaction": "1",
+      "difficult_chars": "あ"
+    },
+    "sus": {
+      "q1": 4,
+      "q2": 5,
+      "q3": 2,
+      "q4": 1,
+      "q5": 5,
+      "q6": 1,
+      "q7": 2,
+      "q8": 5,
+      "q9": 4,
+      "q10": 1
+    }
+  },
+  "surveySummary": {
+    "sus_score": 60
+  },
+  "summary": {
+    "totalSentences": 5,
+    "completedSentences": 5,
+    "interruptedSentences": 0,
+    "averageSpeed": 0.211099867659975,
+    "averageAccuracy": 87.22222222222223,
+    "averageCER": 0.12777777777777777,
+    "totalTime": 123.14000000000001,
+    "averageInterCharMs": 4736.181818181818
+  }
+}
