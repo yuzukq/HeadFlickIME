@@ -1,0 +1,6 @@
+﻿,time_per_char,time_per_char,accuracy,accuracy,msd,msd
+,mean,std,mean,std,mean,std
+direction,,,,,,
+横方向のみ,2.477,0.239,100.0,0.0,0.0,0.0
+縦方向のみ,2.097,0.304,100.0,0.0,0.0,0.0
+複合方向,3.818,0.858,85.616,14.058,1.167,1.262
