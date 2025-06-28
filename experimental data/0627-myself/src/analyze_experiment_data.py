@@ -7,6 +7,10 @@ from pathlib import Path
 
 font_name = "MS Gothic"
 
+# matplotlibの日本語フォント設定
+plt.rcParams['font.family'] = font_name
+plt.rcParams['axes.unicode_minus'] = False  # マイナス記号の文字化け防止
+
 # データディレクトリの設定 - 絶対パスを使用
 current_dir = Path(__file__).parent
 data_dir = current_dir / ".." / "measurement data"
@@ -142,9 +146,22 @@ def create_summary_table():
     
     df = pd.DataFrame(summary_data)
     
-    # CSVファイルとして保存
+    # CSVファイルとして保存（保存時のみ列名を日本語に変更）
+    df_japanese = df.rename(columns={
+        'experiment_id': '実験ID',
+        'sentence_index': '文番号',
+        'original_text': '元テキスト',
+        'input_text': '入力テキスト',
+        'input_time': '入力時間（秒）',
+        'speed': '入力速度（文字/分）',
+        'accuracy': '正解率（%）',
+        'msd': 'MSD',
+        'cer': 'CER',
+        'char_count': '文字数'
+    })
+    
     output_file = output_dir / "experiment_summary.csv"
-    df.to_csv(output_file, index=False, encoding='utf-8-sig')
+    df_japanese.to_csv(output_file, index=False, encoding='utf-8-sig')
     
     return df
 
@@ -200,6 +217,8 @@ def create_visualizations(char_df, summary_df, direction_df):
         print("警告: データが不足しているため、グラフを作成できません")
         return
     
+    # 文字行の順序を定義
+    char_lines_order = ['あ行', 'か行', 'さ行', 'た行', 'な行', 'は行', 'ま行', 'や行', 'ら行', 'わ行']
     
     # 2. 文字行別の正解率
     plt.figure(figsize=(12, 8))
@@ -211,7 +230,7 @@ def create_visualizations(char_df, summary_df, direction_df):
         plt.title('文字行別の正解率', fontname=font_name, fontsize=16)
         plt.xlabel('文字行', fontname=font_name, fontsize=14)
         plt.ylabel('正解率（%）', fontname=font_name, fontsize=14)
-        plt.xticks(rotation=45)
+        plt.xticks(rotation=45, fontname=font_name)
         
         # バーの上に値を表示
         for bar, value in zip(bars, accuracy_by_line.values):
@@ -233,6 +252,7 @@ def create_visualizations(char_df, summary_df, direction_df):
         plt.title('移動方向別の1文字あたりの入力時間', fontname=font_name, fontsize=16)
         plt.xlabel('移動方向', fontname=font_name, fontsize=14)
         plt.ylabel('入力時間（秒/文字）', fontname=font_name, fontsize=14)
+        plt.xticks(fontname=font_name)
         
         # バーの上に値を表示
         for bar, value, std in zip(bars, direction_means.values, direction_stds.values):
@@ -410,6 +430,7 @@ def main():
             'accuracy': ['mean', 'std'],
             'msd': ['mean', 'std']
         }).round(3)
+        direction_stats.columns = ['平均1文字時間', '1文字時間標準偏差', '平均正解率', '正解率標準偏差', '平均MSD', 'MSD標準偏差']
         direction_stats.to_csv(output_dir / "direction_statistics.csv", encoding='utf-8-sig')
         
         # グラフの作成
