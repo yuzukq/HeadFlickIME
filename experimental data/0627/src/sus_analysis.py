@@ -64,67 +64,31 @@ def create_visualizations(df):
     # 1. SUSスコアのヒストグラム
     plt.figure(figsize=(10, 6))
     plt.hist(df['SUSスコア'].astype(float), bins=8, alpha=0.7, color='skyblue', edgecolor='black')
-    plt.title("SUSスコアの分布", fontname=font_name, fontsize=14, fontweight='bold')
-    plt.xlabel("SUSスコア", fontname=font_name, fontsize=12)
-    plt.ylabel("頻度", fontname=font_name, fontsize=12)
+    #plt.title("SUSスコアの分布", fontname=font_name, fontsize=14, fontweight='bold')
+    plt.xlabel("SUSスコア[点]", fontname=font_name, fontsize=12)
+    plt.ylabel("頻度[人]", fontname=font_name, fontsize=12)
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(f"{output_dir}/sus_score_histogram.png", dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 2. SUSスコアのボックスプロット
-    plt.figure(figsize=(8, 6))
-    plt.boxplot(df['SUSスコア'].astype(float), patch_artist=True, 
-                boxprops=dict(facecolor='lightblue', alpha=0.7))
-    plt.title("SUSスコアのボックスプロット", fontname=font_name, fontsize=14, fontweight='bold')
-    plt.ylabel("SUSスコア", fontname=font_name, fontsize=12)
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/sus_score_boxplot.png", dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    # 3. 各設問の回答分布
+    # 2. 各設問の回答分布（棒グラフ）
     fig, axes = plt.subplots(2, 5, figsize=(20, 10))
     axes = axes.flatten()
-    
     for i in range(1, 11):
         col_name = f'設問{i}'
         if col_name in df.columns:
-            question_data = df[col_name].astype(float)
-            axes[i-1].hist(question_data, bins=5, alpha=0.7, color='lightcoral', edgecolor='black')
+            question_data = df[col_name].astype(int)
+            # 各選択肢ごとのカウント
+            counts = [sum(question_data == v) for v in range(1, 6)]
+            axes[i-1].bar(range(1, 6), counts, color='lightcoral', edgecolor='black', alpha=0.7)
             axes[i-1].set_title(f'設問 {i}', fontname=font_name, fontsize=12, fontweight='bold')
             axes[i-1].set_xlabel('回答', fontname=font_name, fontsize=10)
             axes[i-1].set_ylabel('頻度', fontname=font_name, fontsize=10)
-            axes[i-1].grid(True, alpha=0.3)
             axes[i-1].set_xticks(range(1, 6))
-    
+            axes[i-1].grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(f"{output_dir}/questions_distribution.png", dpi=300, bbox_inches='tight')
-    plt.close()
-    
-    # 4. 設問間の相関行列
-    question_cols = [f'設問{i}' for i in range(1, 11) if f'設問{i}' in df.columns]
-    if len(question_cols) > 1:
-        correlation_matrix = df[question_cols].astype(float).corr()
-        
-        plt.figure(figsize=(12, 10))
-        sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0,
-                   square=True, linewidths=0.5, cbar_kws={"shrink": .8})
-        plt.title("設問間の相関行列", fontname=font_name, fontsize=14, fontweight='bold')
-        plt.tight_layout()
-        plt.savefig(f"{output_dir}/questions_correlation.png", dpi=300, bbox_inches='tight')
-        plt.close()
-    
-    # 5. 時系列プロット
-    plt.figure(figsize=(12, 6))
-    plt.plot(range(1, len(df)+1), df['SUSスコア'].astype(float), 
-             marker='o', linewidth=2, markersize=8, color='darkblue')
-    plt.title("SUSスコアの時系列", fontname=font_name, fontsize=14, fontweight='bold')
-    plt.xlabel("参加者の順序", fontname=font_name, fontsize=12)
-    plt.ylabel("SUSスコア", fontname=font_name, fontsize=12)
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(f"{output_dir}/sus_score_timeseries.png", dpi=300, bbox_inches='tight')
     plt.close()
     
     print(f"グラフを {output_dir} に保存しました")
