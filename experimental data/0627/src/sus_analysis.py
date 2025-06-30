@@ -7,11 +7,12 @@ import os
 
 # フォント名を明示的に指定
 font_name = "MS Gothic"
+plt.rcParams['font.family'] = font_name
 sns.set_style("whitegrid")
 
 def load_sus_data():
     """SUSデータを読み込む"""
-    file_path = "experimental data/0627/statistical data/sus_score.csv"
+    file_path = "../statistical data/sus_score.csv"
     
     # CSVファイルを読み込み、統計行を除外
     df = pd.read_csv(file_path, encoding='utf-8')
@@ -63,17 +64,26 @@ def create_visualizations(df):
     
     # 1. SUSスコアのヒストグラム
     plt.figure(figsize=(10, 6))
-    plt.hist(df['SUSスコア'].astype(float), bins=8, alpha=0.7, color='skyblue', edgecolor='black')
+    plt.hist(df['SUSスコア'].astype(float), bins=8, alpha=0.7, color='#888', edgecolor='black')
     #plt.title("SUSスコアの分布", fontname=font_name, fontsize=14, fontweight='bold')
     plt.xlabel("SUSスコア[点]", fontname=font_name, fontsize=12)
     plt.ylabel("頻度[人]", fontname=font_name, fontsize=12)
+    
+    # 平均スコアの点線を追加
+    mean_score = df['SUSスコア'].astype(float).mean()
+    plt.axvline(x=mean_score, color='black', linestyle='--', linewidth=2, label=f'平均: {mean_score:.1f}点')
+    legend = plt.legend(fontsize=10)
+    # 凡例のテキストにフォントを設定
+    for text in legend.get_texts():
+        text.set_fontname(font_name)
+    
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(f"{output_dir}/sus_score_histogram.png", dpi=300, bbox_inches='tight')
     plt.close()
     
     # 2. 各設問の回答分布（棒グラフ）
-    fig, axes = plt.subplots(2, 5, figsize=(20, 10))
+    fig, axes = plt.subplots(5, 2, figsize=(12, 24))
     axes = axes.flatten()
     for i in range(1, 11):
         col_name = f'設問{i}'
@@ -81,7 +91,7 @@ def create_visualizations(df):
             question_data = df[col_name].astype(int)
             # 各選択肢ごとのカウント
             counts = [sum(question_data == v) for v in range(1, 6)]
-            axes[i-1].bar(range(1, 6), counts, color='lightcoral', edgecolor='black', alpha=0.7)
+            axes[i-1].bar(range(1, 6), counts, color='#888', edgecolor='black', alpha=0.7)
             axes[i-1].set_title(f'設問 {i}', fontname=font_name, fontsize=12, fontweight='bold')
             axes[i-1].set_xlabel('回答', fontname=font_name, fontsize=10)
             axes[i-1].set_ylabel('頻度', fontname=font_name, fontsize=10)
