@@ -53,4 +53,4 @@
 * **UXのカスタマイズ**: 利用者ごとの身体的特性や習熟度に応じた閾値の動的な調整機能や、ハードウェア設計の改善により、さらなるユーザビリティ向上を目指します。
 
 * **新たな応用分野への展望**: 本システムで実現した「カメラを用いない頭部トラッキングおよび瞼検出技術」は、福祉分野に限らず、Webカメラを使わずにVtuberのようなアバター操作を行うインターフェースとしても応用可能です。実際に、カメラ非依存でアバターを操作するデモ動画も作成しました。
-[!['カメラ非依存Vtuber操作デモ動画']('experimental%20data/image/FutureOutlook.png')]('https://youtu.be/hpAxzldEQlo')
+[![カメラ非依存Vtuber操作デモ動画](experimental%20data/image/FutureOutlook.png)](https://youtu.be/hpAxzldEQlo)
